@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>天天生鲜</title>
+    <link rel="stylesheet" href="css/main.css">
+    <script src="js/vue.min.js"></script>
+    <script src="js/jquery-1.12.4.min.js"></script>
+</head>
+<body>
+    <div class="alert_bg">
+        <div class="alert_box">
+            <button class="close_alert">X</button><br>
+            <span>message</span>
+            <button id="alert_confirm_button">确定</button>   
+        </div>
+    </div>
+    <div id="app">
+        <!-- 提醒 -->
+
+
+        <!-- 页面顶部 -->
+        <div id="top">
+            <!-- 顶部灰色条 -->
+            <div id="header">
+                <div class="header_word">欢迎来到天天生鲜!</div>
+                <div id="header_label">
+                    <label :class="{red: bRed==0}" @mouseenter="bRed=0" @mouseleave="bRed=-1">登录</label>
+                    <v></v>
+                    <label :class="{red: bRed==1}" @mouseenter="bRed=1" @mouseleave="bRed=-1">注册</label>
+                    <v></v>
+                    <label :class="{red: bRed==2}" @mouseenter="bRed=2" @mouseleave="bRed=-1">用户中心</label>
+                    <v></v>
+                    <label :class="{red: bRed==3}" @mouseenter="bRed=3" @mouseleave="bRed=-1">我的购物车</label>
+                    <v></v>
+                    <label :class="{red: bRed==4}" @mouseenter="bRed=4" @mouseleave="bRed=-1">我的订单</label>
+                </div>
+            </div>
+            <!-- 搜索分类  -->
+            <div id="search">
+                <img class="logo" src="images/logo.png" alt="">
+                <div id="search_box">
+                    <img src="images/search_icon.jpg">
+                    <input type="button" id="search_btn" value="搜索">
+                    <input type="text" id="search_enter" value="" placeholder="搜索商品">
+
+                </div>
+                <a id="shopping_chart" href="#" @mouseover="bBlue=true" @mouseout="bBlue=false":class="{lightBlue:bBlue}">
+                        <img src="images/shopping_chart.jpg">
+                        <div id="change" class="div01">0</div>
+                        <div class="div02">我的购物车</div>
+                </a>
+            </div>
+            <div id="sort">
+                    <div id="all-sort" @click="bShow=true" >
+                            <button>全部商品分类<img src="images/down.png"></button>
+                        <ul>
+                            <li><img src="images/1.jpg">新鲜水果<img class="right" src="images/right.jpg"></li>
+                            <li><img src="images/2.jpg">海鲜水产<img class="right" src="images/right.jpg"></li>
+                            <li><img src="images/3.jpg">猪牛羊肉<img class="right" src="images/right.jpg"></li>
+                            <li><img src="images/4.jpg">禽类蛋品<img class="right" src="images/right.jpg"></li>
+                            <li><img src="images/5.jpg">新鲜蔬菜<img class="right" src="images/right.jpg"></li>
+                            <li><img src="images/6.jpg">速冻食品<img class="right" src="images/right.jpg"></li>
+                        </ul>
+                    </div>
+                    <div id="label-sort">
+                            <label :class="{red: bRed==5}" @mouseenter="bRed=5" @mouseleave="bRed=-1">首页&nbsp;&nbsp;</label>
+                            <v></v>&nbsp;&nbsp
+                            <label :class="{red: bRed==6}" @mouseenter="bRed=6" @mouseleave="bRed=-1">手机生鲜&nbsp;&nbsp;</label>
+                            <v></v>&nbsp;&nbsp
+                            <label :class="{red: bRed==7}" @mouseenter="bRed=7" @mouseleave="bRed=-1">抽奖&nbsp;&nbsp;</label>
+                    </div>
+            </div>
+        </div>
+        <!-- 页面tags -->
+        <div id="tags">
+            <a href="#">全部分类</a> <label for="">></label>
+            <a href="#">新鲜水果</a> <label for="">></label>
+            <a href="#">商品详情</a>
+        </div>
+        <div id="middle">
+            <img class="big-img" src="images/goods_detail.jpg" alt="">
+            <div id="middle-right">
+                <div class="good-id">大兴大棚草莓</div>
+                <p>草莓浆果柔软多汁，味美爽口，适合速冻保鲜储藏，草莓速冻后，可以保持原有的色，香，味，既便于储藏，又便于外销。</p>
+                <div id="mr-box">
+                    <div id="price">
+                        <div id="csymbol">￥</div>
+                        <label id="cprice">{{price}}</label>
+                    </div>
+                    <div id="weight">
+                        <div>{{ "单位: "+ weight + "g"}}</div>
+                    </div>
+                </div>
+                <div id="nANDp">
+                        <div id="number">数量 ：</div>
+                        <input type="text" id="nEnter" v-model.number="number">
+                        <div id="btnG">
+                            <button id="b1" @click="fnIncrease">+</button>
+                            <button id="b2" @click="fnDecrease">-</button>
+                        </div>
+                </div>
+                <div id="sum">
+                    <div id="div01">总价： </div>
+                    <div id="div02">{{price_i*number|numFilter}}元</div>
+                </div>
+                <div id="buy">
+                    <button id="b_b1">立即购买</button>
+                    <button id="b_b2">加入购物车</button>
+                </div>
+            </div>
+        </div>
+        <!-- 下半部分 -->
+        <div id="bottom">
+            <div id="b-left">
+                <div id="b-l-banner">新品推荐</div>
+                <a href="#"><img src="images/goods/goods001.jpg" alt=""></a>
+                <div id="One-ex"><a href="#">进口柠檬</a><div style="color:red">￥3.90</div></div>
+
+                <a href="#"><img src="images/goods/goods002.jpg" alt=""></a>
+                <div id="Two-ex"><a href="#">玫瑰香葡萄</a><div style="color:red">￥16.80</div></div>
+            </div>
+            <div id="b-right">
+                <label @click="intro=0"  :class="{active:intro==0}">商品介绍</label>
+                <label @click="intro=1" :class="{active:intro==1}">评论</label><br>
+                <div id="br-intro" :class="[intro==0?'show':'Nshow']">
+                    <h3 class="intro-h">商品详情：</h3>
+                    <div class="intro">草莓采摘园位于北京大兴区 庞各庄镇四各庄村，每年1月-6月面向北京及其周围城市提供新鲜草莓采摘和精品礼盒装草莓，草莓
+                        均严格按照有机标准培育，不使用任何化肥和农药。草莓在采摘期间免洗可以直接食用。欢迎喜欢草莓的市民前来采摘，也欢迎
+                        各大单位选购精品有机草莓礼盒，有机草莓礼盒是亲朋馈赠、福利送礼的最佳选择。
+                    </div>
+                </div>
+                <div id="comment" :class="[intro==1?'show':'Nshow']">
+                    <div class="c1">
+                        <h3>用户：<span>超哥</span></h3><div class="rate"><span><img src="images/star1-small.png"></span><span><img src="images/star1-small.png"></span><span><img src="images/star1-small.png"></span><span><img src="images/star1-small.png"></span><span><img src="images/star1-small.png"></span></div>
+                        <h4>主题：不错的</h4>
+                        <div class="s-comment">草莓表面疙疙瘩瘩,附有许多小种子，小时候我还以为那是很多的芝麻粘在上面呢。上端尖尖的，末端圆圆的，大大的，就像平常见到的“爱心”的图案。熟透了的草莓是深红的，像一颗颗玛瑙；没有熟透的草莓是大红的，像一个个小灯笼，有的是青里透红，像怕羞似的。闻了闻，一股清香馋得我直流口水。我拿了一个草莓，轻轻咬一口，鲜红的汁水流了出来，又酸又甜， 唯一感到遗憾的就是那附在草莓表面上的小种子吃起来没有什么味道。</div>
+                    </div>
+                    <input type="text" name="input-comH" placeholder="主题" class="ta01" id="insertB">
+                    <textarea class="ta02" placeholder="评论"></textarea>
+                    <div id="rate-stars">
+                        <img class="first-l" src="images/star.png"><img class="not-active second-l" src="images/star1.png">
+                        <img class="first-l" src="images/star.png"><img class="not-active second-l" src="images/star1.png">
+                        <img class="first-l" src="images/star.png"><img class="not-active second-l" src="images/star1.png">
+                        <img class="first-l" src="images/star.png"><img class="not-active second-l" src="images/star1.png">
+                        <img class="first-l" src="images/star.png"><img class="not-active second-l" src="images/star1.png">
+                    </div>
+                    <button class="add">添加评论</button>
+                </div>
+            </div>
+            
+        </div>
+        <div id="footer">
+                <div id="footer-label">
+                    <label :class="{red: bRed==10}" @mouseenter="bRed=10" @mouseleave="bRed=-1">关于我们</label>
+                    <v></v>
+                    <label :class="{red: bRed==11}" @mouseenter="bRed=11" @mouseleave="bRed=-1">联系我们</label>
+                    <v></v>
+                    <label :class="{red: bRed==12}" @mouseenter="bRed=12" @mouseleave="bRed=-1">招聘人才</label>
+                    <v></v>
+                    <label :class="{red: bRed==13}" @mouseenter="bRed=13" @mouseleave="bRed=-1">友情链接</label>
+                </div>
+                <div class="last">
+                    CopyRight & 2016 北京天天生鲜信息技术有限公司 All Rights Reserved
+                </div>
+                <div class="last">
+                    电话：010-12345678 京ICP备*******号
+                </div>
+
+                
+        </div>
+    </div>
+    <script>
+        $(function(){
+            var count = 0;
+            var user_name = ''
+            var is_log_in = false
+            var $oSlide = $('#all-sort button')
+            $oSlide.click(function(){
+            $(this).next().stop().slideToggle();
+            })
+            $('#tags a').mouseenter(function(){
+                $(this).css({'color':'red'});
+            }).mouseleave(function(){
+                $(this).css({'color':'green'})
+            })
+            $('#all-sort li').mouseenter(function(){
+                $(this).css({'color':'red'});
+            }).mouseleave(function(){
+                $(this).css({'color':'black'})
+            })
+            //slide
+            var $oSlide = $('#all-sort div')
+            $oSlide.click(function(){
+            this.next().slideToggle();
+            })
+            var good_id = -1;
+            $.ajax({
+                url:"json/addcart.json",
+                type:'get',
+                dataType:'json',
+                success:function(dat){
+                    if(dat.is_ok){
+                        $('#change').html(dat.goods_count);
+                    }
+                    good_id = dat.good_id;
+                },
+                error:err=>{
+                    tell_alert("添加购物车失败！")
+                    console.log(err);
+                }
+            })
+            //ajax_shopping_cart
+            $('#b_b2').click(function(){
+                $.ajax({
+                    url:"json/islogin.json",
+                    type:'get',
+                    dataType:'json',
+                    success:function(dat){
+                        if(!fnNum(parseInt($('#nEnter').val()))){
+                            tell_alert('请输入一个数字！');
+                            return;
+                        }
+                        if(dat.is_login){
+                            $('#middle').animate({marginLeft:'4%'},100,function(){
+                                $('#middle').animate({marginLeft:'6%'},100);
+                            });
+                            $('#middle').animate({marginRight:'4%'},100,function(){
+                                $('#middle').animate({marginRight:'6%'},100);
+                            });
+                            $('#change').html(parseInt($('#change').html())+parseInt($('#nEnter').val()));
+                        }
+                        else tell_alert("请登录后购买！");
+                    },
+                    error:err=>{
+                        tell_alert("加载用户信息失败！")
+                        console.log(err);
+                    }
+
+                })
+            })
+            //ajax_index_page
+            $.ajax({
+                url:"http://localhost:8081/index_page",
+                type:'get',
+                dataType:'json',
+                success:function(dat){
+                    if(dat.errorFlag==1){
+                        tell_alert(dat.errorMessage);
+                        return;
+                    }
+                    data = eval(dat.data);
+                    console.log(data);
+                    for (let i=0;i<data.length;i++){
+                        sTr = '<div class="c1"><h3>用户：<span>'+data[i].user+'</span></h3><div class="rate">';
+                        for (var j=0;j<data[i].stars;j++){
+                            sTr += '<span><img src="images/star1-small.png"></span>'
+                        }
+                        sTr += '<label class="delete" name="'+data[i].user+'">删除</label></div><h4>主题：'+data[i].header+'</h4><div class="s-comment">'+data[i].comment+'</div></div>';
+                        var $sTr = $(sTr);
+                        $sTr.insertBefore($('#insertB'));
+                    }
+                    console.log(dat.succMessage);
+                },
+                error:err=>{
+                    tell_alert("首页加载失败！")
+                    console.log(err)
+                }
+
+            })
+            $.ajax({
+                url:"json/islogin.json",
+                type:'get',
+                contentType: 'text/json,charset=utf-8',
+                dataType:'json',
+                success:function(dat){
+                    user_name = dat.user_id
+                    is_log_in = dat.is_login
+                },
+                error:err=>{
+                    tell_alert("提取登录文件失败！")
+                    console.log(err)
+                }
+            })
+            // 删除评论
+            var delete_name = ''
+            var delete_flag = false;
+            $('#comment').delegate("label","click",function(event){
+                delete_name = $(this).attr("name");
+                console.log('before comparing user name');
+                if (delete_name == user_name){
+                    console.log('before calling aler_user')
+                    tell_alert("是否删除评论",true);
+                    console.log('after calling aler_user')
+                    var $target = $(event.target);
+                    $target.parent().parent().css("display","none");
+                    tell_alert('删除成功',false);
+                    return;
+                }
+                else{
+                    tell_alert('不能删除别人的评论！', false);
+                    return;
+                }
+
+            })
+
+            //动态评分
+            $stars = $('#rate-stars img');
+            $stars.click(function(){
+                let index = $(this).index();
+                if(index%2 == 0){
+                    index = (index+2)/2;
+                    $('.second-l:lt('+index+')').removeClass('not-active');
+                    $('.first-l:lt('+index+')').addClass('not-active');
+                }
+                else{
+                    index = (index+1)/2;
+                    $('.second-l:gt('+(index-1)+')').addClass('not-active');
+                    $('.first-l:gt('+(index-1)+')').removeClass('not-active');
+                }
+                count = index;
+            })
+            
+
+
+            //添加评论时，向数据库发送数据
+            $('#comment button').click(function(){
+                var $t01 = $('.ta01'),
+                $t02 = $('.ta02'),
+                sTr = '';
+                result_from_mysql = ''
+                if ($t01.val()==='') {
+                    tell_alert('主题不能为空！');
+                    return;
+                }
+                if ($t02.val()==='') {
+                    tell_alert('评论不能为空');
+                    return;
+                }
+                if(count == 0) {
+                    tell_alert('请为我们的产品打个分，谢谢');
+                    return;
+                }
+                
+                // add data to mysql
+                if (is_log_in) {
+                    //向数据库发送添加数据请求
+                    $.ajax({
+                        url: "http://localhost:8081/index_add",
+                        type:'POST',
+                        dataType: "json",
+                        contentType: "application/json; charset=utf-8",
+                        data: JSON.stringify(getJsonData()),
+                        success:function(dat){
+                            if (dat.errorFlag==0){
+                                sTr = '<div class="c1"><h3>用户：'+user_name+'</h3><div class="rate">';
+                                for (let i=0;i<count;i++){
+                                    sTr += '<span><img src="images/star1-small.png"></span>'
+                                }
+                                sTr += '<label class="delete" '+'name='+user_name+'>删除</label></div><h4>主题：'+$t01.val()+'</h4><div class="s-comment">'+$t02.val()+'</div></div>';
+                                var $sTr = $(sTr);
+                                $sTr.insertBefore($('#insertB'));
+                                $t01.val('');
+                                $t02.val('');
+                                reset();
+                                tell_alert(dat.succMessage,false);
+                            }
+                            else{
+                                tell_alert(dat.errorMessage,false);
+                            }
+                        },
+                        error:err=>{
+                            tell_alert("添加失败",false);
+                            console.log('hello');
+                        }
+                    })
+                    function getJsonData(){
+                        var json = {
+                            users: user_name,
+                            header:$t01.val(),
+                            comment:$t02.val(),
+                            good_id:good_id,
+                            stars:count
+                        };
+                        return json;
+                    }
+                }
+                else tell_alert("请登录后评论！");
+
+            })
+            var result_from_alert = false;
+            //告诉用户操作以完成
+            function tell_alert(msg, flag){
+                show_alert(msg);
+                if (flag){
+                    result_from_alert = flag;
+                }
+                console.log(result_from_alert);
+            }
+            $('#alert_confirm_button').click(function(){
+                    console.log(result_from_alert);
+                    close_alert(result_from_alert);
+                    result_from_alert = false;
+            })
+            $('.close_alert').click(function(){
+                close_alert(false);
+            });
+            function show_alert(msg){
+                $('.alert_box span').html(msg);
+                $('div.alert_bg').fadeIn();
+                $('.alert_box').delay(500).slideDown();
+            }
+
+            function close_alert(del){
+                $('.alert_bg').toggle();
+                console.log("into close_alert");
+                if (!del){
+                    console.log('fade without del');
+                }
+                else {
+                    console.log("before ajax!")
+                    $.ajax({
+                        url: 'http://localhost:8081/index_del',
+                        contentType: "application/json; charset=utf-8",
+                        type: 'POST',
+                        dataType: "json",
+                        data: JSON.stringify(getJsonData()),
+                        success:function(dat){
+                            if (dat.errorFlag == 0) {
+                                console.log(dat)
+                            }
+                            else{
+                                tell_alert(dat.errorMessage,false);
+                            }
+                        },
+                        error:err=>{
+                            tell_alert('删除失败',false);
+                            console.log(err);
+                        }
+                    })
+
+                    function getJsonData(){
+                        var json = {
+                            users: user_name,
+                            good_id: good_id
+                        };
+                        return json;
+                    }
+                }
+            }
+
+
+            function reset(){
+                count = 0;
+                for(var i =0;i<5;i++){
+                    $('.second-l:eq('+i+')').addClass('not-active');
+                    $('.first-l:eq('+i+')').removeClass('not-active');
+ 
+                }
+            }
+
+            //check number
+            function fnNum(val){
+                // alert(this.number);
+                var numReg = /^[0-9]+$/;
+                var numRe = new RegExp(numReg);
+                if (!numRe.test(val)) {
+                    // alert(false);
+                    return false;
+                }
+                else {
+                    // alert(false);
+                    return true;
+                }
+
+            }
+            //animation
+
+        })
+
+
+        Vue.component('v', {
+            template: '<label class=".verti">|</label>'
+        })
+        var vm = new Vue({
+            el:'#app',
+            data:{
+                bRed:-1,
+                bShow:false,
+                bBlue:false,
+                price_i: 16.80,
+                price: '16.80',
+                weight:500,
+                number: 1,
+                intro: 0,
+            },
+            watch:{
+                number(val){
+                    this.fnIsNum(val);
+                }
+            },
+            methods:{
+                fnIsNum:function(val){
+                    // alert(this.number);
+                    var numReg = /^[0-9]+$/;
+                    var numRe = new RegExp(numReg);
+                    if (!numRe.test(val)) {
+                        // alert(false);
+                        return false;
+                    }
+                    else {
+                        // alert(false);
+                        return true;
+                    }
+
+                },
+
+                fnDecrease:function(){
+                    if(!this.fnIsNum(this.number)){
+                        tell_alert('不是一个有效数字！',false);
+                        this.number=1;
+                        return;
+                    }
+                    if(this.number===0){
+                        tell_alert("请购买至少一个物品！",false);
+                    }
+                    else {
+                        this.number-=1;
+                    }
+                },
+                fnIncrease:function(){
+                    if(!this.fnIsNum(this.number)){
+                        tell_alert('不是一个有效数字！');
+                        this.number=1;
+                        return;
+                    }
+                    this.number+=1;
+
+                }
+            },
+            filters:{
+                numFilter: function(value){
+                    let realVal = parseFloat(value).toFixed(2)
+                    return parseFloat(realVal);
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
